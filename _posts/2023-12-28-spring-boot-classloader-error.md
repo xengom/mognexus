@@ -8,7 +8,7 @@ tags: [Springboot IntelliJ]
 ---
 
 
-
+<br/>
 # Error Logs
 ```
 java.lang.IllegalStateException : Failed to introspect Class [org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration] from ClassLoader
@@ -19,13 +19,13 @@ Caused by : java.lang.ClassNotFoundException : javax.servlet.DispatcherType
 ``` 
 
 
-
+<br/><br/>
 # Cause by
 Maven pom.xml 에서 tomcat의 scope가 provided로 설정되어 있었으나
 Eclipse와는 다르게 IntelliJ는 Run Configuration > provided를 무시할지 여부를 별도로 설정해야만 tomcat을 제대로 읽어들인다. 
 
 
-
+<br/><br/>
 # Solution
 + scope 제거
 <br/>
@@ -54,9 +54,11 @@ Run/Debug Configuration > Modify options > ‘ADD DEPENDENCIES WITH "PROVIDED" S
 <br/>
 상기 과정을 통해 구동하면 정상구동한다.
 
-
+<br/><br/>
 # Refference
 [stackoverflow_failed-to-introspect-class-org-springframework-security-config-annotation-web][stackoverflowLink]
 > We were seeing this locally because when running Spring Boot application from IntelliJ we didn't have the option 'Include dependencies with "Provided" scope' in the Run/Debug Configuration ticked.
+
+<br/><br/>
 
 [stackoverflowLink]: https://stackoverflow.com/questions/53714699/failed-to-introspect-class-org-springframework-security-config-annotation-web-c
