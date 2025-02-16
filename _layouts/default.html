@@ -4,6 +4,18 @@
   {% include head.html %}
 </head>
 <body>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default'
+      });
+      document.querySelectorAll('.language-mermaid').forEach(element => {
+        element.classList.add('mermaid');
+      });
+    });
+  </script>
   <div class="container-wrapper">
     <header class="container-header">
       {% include header.html %}
