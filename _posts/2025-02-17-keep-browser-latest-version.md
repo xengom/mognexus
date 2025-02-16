@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Browser상의 Front App 최신화하기  
-date:   2025-02-17
-last_modified_at: 2025-02-17
+date:   2025-2-17
+last_modified_at: 2025-2-17
 category: [Dev Ops]
 tags: [Javascript vue.js]
 ---
