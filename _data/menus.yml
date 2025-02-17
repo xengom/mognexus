@@ -4,5 +4,8 @@
 - default: menu_category
   url:   "category"
 
+- default: menu_tag
+  url:   "tag"
+
 - default: menu_about
   url:   "about"
