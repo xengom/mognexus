@@ -25,3 +25,20 @@
 .post-category, .post-tag {
   margin: 0 5px;
 }
+
+.post-content {
+    a {
+        color: #178582;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: #1FB5B9;
+        text-decoration: underline;
+    }
+
+    a:visited {
+        color: #0A1828;
+    }
+}
+

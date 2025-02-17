@@ -9,9 +9,6 @@ layout: default
   <div class="post-author">
     <span>{{ site.name }}</span>
   </div>
-  <div class="post-content">
-    {{ content }}
-  </div>
   <div class="post-info">
     <div class="post-date">
       {{ site.data.lang[site.language].post_write_date }}{{ page.date | date: "%Y-%m-%d" }}{% if page.last_modified_at %}, {{ site.data.lang[site.language].post_update_date }}{{ page.last_modified_at | date: "%Y-%m-%d" }}{% endif %}.
@@ -43,5 +40,9 @@ layout: default
     {% if site.comments %}
       {% include comments.html %}
     {% endif %}
+  </div>
+  <hr>
+  <div class="post-content">
+    {{ content }}
   </div>
 </article>
