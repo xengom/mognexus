@@ -8,7 +8,7 @@ tags: [Javascript, Node.js, Express.js, Raspberry Pi]
 ---
 
 # Overview
-<br/>
+
 ## Purpose
 리그 오브 레전드 클랜 내의 내전 기록을 남기고, 이를 기반으로 각 유저의 내전 전적을 검색할 수 있도록 하여 원활한 내전 진행을 촉진하기 위함.
 
@@ -81,6 +81,7 @@ Raspberry Pi 상에서 서비스를 제공해본 결과, `Spring Boot`와 `Postg
 | 1   | AWS CloudFront   | AWS EC2            | AWS RDS       | AWS EC2            | $50↑ |
 | 2   | vercel(next.js)  | AWS Lightsail      | Cloudflare D1 | AWS Lightsail      | $10↑ |
 | 3   | Cloudflare Pages | Cloudflare workers | Cloudflare D1 | Cloudflare workers | $0↑  |
+
 <br/>
 
 우선 `AWS RDS`는 가장 레퍼런스도 많고 사용하기도 쉬웠으나 가장 비싼 요금을 자랑했다. 사용한만큼만 낸다고는 하지만 기본요금도 무시할 수 없기 때문에 1번안은 제외하였다.
