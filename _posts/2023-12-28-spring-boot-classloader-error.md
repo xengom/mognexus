@@ -4,7 +4,7 @@ title:  IntellJ에서 SpringBoot 사용 시 ClassLoader Error 해결방법
 date:   2023-12-28
 last_modified_at: 2023-12-28
 category: [Trouble Shooting]
-tags: [Springboot IntelliJ]
+tags: [Springboot, IntelliJ]
 ---
 
 

@@ -3,8 +3,8 @@ layout: post
 title:  Javascript Array Method 정리
 date:   2025-02-16
 last_modified_at: 2025-02-16
-category: [TIL-JS]
-tags: [Javascript array]
+category: [TIL]
+tags: [Javascript, Array]
 ---
 <br/>
 # 사전지식 
