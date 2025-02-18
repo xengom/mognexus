@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 급여명세서 파싱해서 자동입력하기
+title: 암호걸린 급여명세서를  파싱해서 자동입력하기
 date:   2025-02-14
 last_modified_at: 2025-02-14
 category: [Toy Project]
@@ -112,15 +112,16 @@ export default app;
  ...
 </html>
 ~~~
-소스상 `ViewPayPaper()`에서 비밀번호(생년월일)을 확인하고, 비밀번호가 맞으면 해당 비밀번호를 기준으로 최하단 `_viewData` input태그의 value값을 파싱해서 `document.write()`하고 있다. 즉 `REST Call`등의 네트워크 통신 없이 이미 비밀번호를 치고 들어갔을 때 뜨는 월급명세서 화면은 이미 비밀번호를 입력하기 전에 암호화된 상태로 가지고 있다는 얘기다.
+`ViewPayPaper()`에서 비밀번호(생년월일)을 확인하고, 비밀번호가 맞으면 해당 비밀번호를 기준으로 최하단 `_viewData` input태그의 value값을 파싱해서 `document.write()`하고 있다. 즉, `급여명세서.html`파일은 비밀번호를 치지 않아도 이미 급여명세서의 내용을 html파일로 가지고 있었다. 실제로 Chrome DevTools를 켜놓고 비밀번호를 입력했을 때, 별도의 네트워크 통신 없이 월급명세서 화면을 띄울 수 있다. 
 
 <br/><br/>
 
 ## 2. 파싱로직 구현
-쉽게 얘기하면 Service 로직에서는 
-1. `급여명세서.html`파일에서 `_viewData` input태그의 value 값만 가져온 다음
-2. `ViewPayPaper()`의 복호화 로직을 실행시켜 실제 급여명세의 `html`을 추출하고
-3. 2 번의 `html`파일에서 급여명세에 해당하는 부분을 같은 방식으로 가져오면 된다.
+급여명세서는 암호화된 급여명세서를 비밀번호(생년월일)을 이용해 복호화하기만 하면, 원하는 내용을 추출가능하므로 다음과 같은 순서로 파싱로직을 구현해야 한다. 
+1. `급여명세서.html`파일에서 `_viewData` input태그의 value 값 추출
+2. value 값을  `ViewPayPaper()`로 복호화해 `평문html`을 추출
+3. 2 번의 `평문html`파일에서 급여명세에 해당하는 부분을 추출
+상세 구현은 다음과 같다.
 
 <br/>
 ### 2-1. input 태그의 value 값 추출
@@ -141,7 +142,7 @@ function extractViewData(htmlContent) {
 ~~~ js
 function decodeHtml(viewData) {
 	const bin = unescape(viewData).split(',');
-	const strKey = `${생년월일}`;
+	const strKey = `${생년월일}`; // 급여명세서 조회시  입력하는 비밀번호(생년월일)
 	return bin.reduce((decodedHtml, value, index) => {
 		return decodedHtml + String.fromCharCode(
 		Number(value) + strKey.charCodeAt(index % strKey.length));
@@ -161,7 +162,7 @@ async function parseHtml(decodedHtml) {
 	let currentTable = 0;
 	let currentRow = 0;
 
-// 테이블과 행 매핑 정의, 이 부분은 Chrome에서 직접 띄워서 찾아야 한다.
+// 테이블과 행 매핑 정의, 원하는 급여명세 내역이 몇 번째 table에 있는지 직접  찾아야 한다.
 const tableMapping = {
 	지급내역: { table: 5, keyRow: 7, valueRow: 8 },
 	공제내역1: { table: 5, keyRow: 16, valueRow: 17 },
@@ -217,22 +218,34 @@ return result;
 ~~~
 
 <br/><br/>
-### 2-4. Postman으로 테스트
-postman으로 body에 `급여명세서.html`을 첨부하여 `POST`요청하고 return 값을 살펴본다.
+## 3. 파싱로직 테스트
+postman으로 body에 `급여명세서.html`를 binary로  첨부하여 `POST`요청하고 return 값을 살펴본다.
 <br/>
 
 <br/>
 ![payroll_parsing](/assets/images/payroll_parsing.png)
-<br/>
-![payroll_parsing_spreadsheet](/assets/images/payroll_parsing_spreadsheet.png)
 
-정상적으로 return 되고, SpreadSheet에도 정상적으로 반영되고 있다. 
-SpreadSheet에 자동으로 넣어주는 부분은 Google Document에 상세히 설명되어 있기 때문에 이 부분에 대한 내용은 생략한다.
+정상적으로 파싱된 급여명세가 json으로 return 된 것을 확인 할 수 있다.
+
+<br/><br/>
+## 4. SpreadSheet로 저장
+![payroll_parsing_spreadsheet](/assets/images/payroll_parsing_spreadsheet.png)
+이 부분이 별도의 글로 적을만큼 상당히 긴 내용이기에, 이 글에 적기에는 주제에서 벗어나는 듯 하여 상세내용은 생략하고, 간단히 설명하자면 다음과 같은 작업이 필요하다.
+1. GCP(Google Cloud Platform)에 프로젝트 생성
+2. SpreadSheet에 해당 프로젝트 연동
+3. 프로젝트에 OAuth 설정
+4. GCP 프로젝트의 Key값 다운로드
+5. 해당 키값을 ArrayBuffer로 변환
+6. Web Crypto API로 서명(SHA-256)해서 최종 JWT 액세스 토큰 생성
+7. 6에서 생성한 토큰으로 SpreadSheet에 접근 (Bearer ${accessToken})
+8. 원하는 Sheet에 급여명세 추가
+
+추후 이 부분에 대한 상세 내용은 별도 POST로 작성할 예정이다.
 
 <br/><br/>
 
 ## 향후 개발과제
 사실 가장 하고 싶은 것은 급여명세서가 메일로 오면, 자동으로 이 첨부파일을 다운받아서, POST 요청을 보내는 것이긴 한데, Apple 단축어에 `특정 메일이 왔을 때 작동하는 트리거`는 존재하지만, `메일에서 첨부파일을 다운`받는 액션은 존재하지 않아 완벽한 자동화는 아직 달성하지 못했다.
 <br/>
-어쩔 수 없이 급여명세서가 오면 `파일을 요청하고, 입력받은 파일을 body에 실어서 POST 요청 보내는 액션`을 실행시키도록 해서 수동으로 파일을 첨부하도록 하고 있지만, 추후 이 부분을 `AppleScript` 등으로 개발하고자 한다.
+어쩔 수 없이 급여명세서가 오면 `파일을 요청하고, 입력받은 파일을 body에 실어서 POST 요청 보내는 액션`을 실행시키도록 해서 수동으로 파일을 첨부하도록 하고 있지만, 추후 이 부분을 `AppleScript` 등으로 개발하거나 별도의 다른 코드를 작성해 완전자동화 하려고 한다. IMAP을 통해 메일을 주기적으로 읽어와서, 급여메일이 있는 경우 자동으로 POST요청하도록 하면 되지 않을까
 
