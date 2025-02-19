@@ -2,9 +2,9 @@
 layout: post
 title: 암호걸린 급여명세서를  파싱해서 자동입력하기
 date:   2025-02-14
-last_modified_at: 2025-02-14
+last_modified_at: 2025-02-20
 category: [Toy Project]
-tags: [Javascript, Hono, html]
+tags: [Javascript, Hono, html, GoogleAPI]
 ---
 # Overview
 ## Purpose
@@ -248,4 +248,9 @@ postman으로 body에 `급여명세서.html`를 binary로  첨부하여 `POST`�
 사실 가장 하고 싶은 것은 급여명세서가 메일로 오면, 자동으로 이 첨부파일을 다운받아서, POST 요청을 보내는 것이긴 한데, Apple 단축어에 `특정 메일이 왔을 때 작동하는 트리거`는 존재하지만, `메일에서 첨부파일을 다운`받는 액션은 존재하지 않아 완벽한 자동화는 아직 달성하지 못했다.
 <br/>
 어쩔 수 없이 급여명세서가 오면 `파일을 요청하고, 입력받은 파일을 body에 실어서 POST 요청 보내는 액션`을 실행시키도록 해서 수동으로 파일을 첨부하도록 하고 있지만, 추후 이 부분을 `AppleScript` 등으로 개발하거나 별도의 다른 코드를 작성해 완전자동화 하려고 한다. IMAP을 통해 메일을 주기적으로 읽어와서, 급여메일이 있는 경우 자동으로 POST요청하도록 하면 되지 않을까
+
+<hr>
+<br/><br/><br/>
+## 240220 추가
+GMAIL API를 사용해서 서버에서 매일 한 번씩 송신자가  월급명세서가 발송되는 email 주소인 메일을 IMAP으로 읽은 다음, 상기 로직을 활용해 자동으로 첨부파일을 파싱해서 Google SpreadSheet에 저장하도록 만들었다. 조금 난관에 부딪혔던 부분은 사용자 서비스 계정으로 Auth가 끝나는 SpreadSheet API와 다르게 별도의 OAuth2 계정을 만들어서, 인증한다는 점이였다. 즉, 소스 작성시 구글 인증관련 소스를 하나 더  작성해야하는 점. <br/> 귀찮긴 했지만 인증부분을 제외하면 API자체는 상당히 직관적이고 메일 찾는 쿼리도 상당히 알아보기 쉬우니 메일연동한다면 gmail이 가장 나을 듯 싶다. 게다가 필자는  `Cloudflare Workers`에 올려놓고 사용할 예정이라 OAuth2 부분을 전부 구현했지만, 보통의 Node.js 환경이라면 관련 package를 install하는 것 만으로 간단히 끝나니 강추.
 
