@@ -2,30 +2,21 @@
 layout: post
 title:  Browser상의 Front App 최신화하기  
 date:   2025-02-17
-last_modified_at: 2025-02-17
+last_modified_at: 2025-03-08
 category: [DevOps]
 tags: [Javascript, Vue.js]
 ---
 
 
 # Issue
-사용자가 서비스 사용 중인 상태에서 WebApp(Front Vue App)이 신규 배포되었을 때, 서버에 배포된 따끈따끈한 WebApp과 사용자의 Browser에서 구동중인 WebApp이 서로 다른 버전을 바로보는 Issue가 있었다.
-<br/>
-```
-배포 순서
-1. Build 
-2. Nexus에 업로드
-3. Nexus의 Build된 소스를 서버에 다운로드
-4. 3 번에서 다운 받은 소스를 기준으로 Serving 
-```
-<br/>
-배포 순서가 이렇게 된 이상 HMR을 기대하기는 어렵기도 하거니와 HMR을 쓰기에는 WebApp자체가 너무 무거워서 Build 시간만 몇 분씩 걸렸기 때문에 부득이 다음과 같은 방법을 채택했다.
+사용자가 서비스 사용 중인 상태에서 WebApp(Front Vue App)이 신규 배포되었을 때, 서버에 배포된 따끈따끈한 WebApp과 사용자의 Browser에서 구동중인 WebApp이 서로 다른 버전을 바로보는 Issue가 있었다. 물론 세션이 종료되면 버튼 클릭 등,  백엔드로 요청이 가는 동작이 실행되면 Refresh되긴 하지만 문제는 배포 당일이였다. <br/>
+예를 들어 25-03-08 오전 10시에 WebApp을 배포하는 경우, 오전 10시 이전에 이미 WebApp을 구동중이던 사용자는 세션이 종료되지 않는 한 계속해서 이전 배포의 WebApp을 사용하게 된다.  
 
 <br/><br/>
 # Constraint
 1. Backend의 리소스는 가급적 사용하지 않을 것
-2. 사용자가 버전 동기화 여부를 선택할 수 있어야 할 것
-3. 별도로 관리하지 않아도 동작할 
+2. 사용자가 버전 동기화 여부를 선택할 수 있어야 할 것<br/>(시스템 특성상 한 화면에서 작업을 1시간 넘게 지속하는 CASE 존재)
+3. 배포시 별도의 절차가 추가되지 않을 것
 
 
 <br/><br/>
@@ -101,5 +92,6 @@ Server(F/E)->>Cli(Browser): 요청받은 시점의<br> F/E App제공
 Cli(Browser)->>User: F/E App 제공
 Note over User: 제공받은 F/E App 사용
 ```
+
 
 <br/><br/>
