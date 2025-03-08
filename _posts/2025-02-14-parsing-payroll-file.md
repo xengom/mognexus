@@ -106,7 +106,7 @@ export default app;
     <form>
     ...
         <input type="hidden" name="_viewData"
-			value="3,52,68,68,3441,2,-6442,....."
+			value="3,52,68,68,3441,2,-6442,.....">
         </input>
     </form>
  ...
