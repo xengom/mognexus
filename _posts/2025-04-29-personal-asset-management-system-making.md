@@ -38,8 +38,9 @@ tags: [Typescript, Next.js, GraphQL, Prisma, Redis, RabbitMQ, Docker]
 <br/>
 
 ## Domain
+
 |Domain|Content|
-|------|-------|
+|--|--|
 |User|Login, Auth, Account, Session|
 |UserPlan|월급, 지출계획, 저축투자계획|
 |Portfolio|자산구성 및 목표비율관리|
