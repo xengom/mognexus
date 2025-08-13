@@ -37,17 +37,17 @@ tags: [Typescript, React, Vite, Radix, Cloudflare, Drizzle]
 
 ## 아키텍처 구성도
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   프론트엔드     │    │  CF Workers     │    │   외부 API      │
-│   React + TS    │◄──►│   API Layer     │◄──►│  Yahoo Finance  │
-│   Shadcn UI     │    │   Drizzle ORM   │    │   기타 소스     │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-                              │
-                              ▼
-                       ┌─────────────────┐
-                       │  Cloudflare D1  │
-                       │   SQLite DB     │
-                       └─────────────────┘
+┌─────────────────┐      ┌─────────────────┐     ┌─────────────────┐
+│   Front(CF Pages)         │      │   CF Pages Function       │     │   외부 API                 │
+│   React(TS)               │◄──►│   API Layer               │◄──►│  Yahoo Finance           │
+│   Radix UI                │      │   Drizzle ORM             │     │   기타 소스                 │
+└─────────────────┘      └─────────────────┘     └─────────────────┘
+                                                  │
+                                                  ▼
+                                    ┌─────────────────┐
+                                    │  Cloudflare D1            │
+                                    │   SQLite DB               │
+                                    └─────────────────┘
 ```
 
 
