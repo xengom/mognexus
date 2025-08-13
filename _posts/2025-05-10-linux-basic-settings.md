@@ -2,7 +2,7 @@
 layout: post
 title: 리눅스 초기설정 정리 
 date:   2025-05-10
-last_modified_at: 2025-05-10
+last_modified_at: 2025-08-13
 category: [Etc]
 tags: [Linux, Shell, zsh]
 ---
@@ -24,6 +24,8 @@ sudo vi /etc/locale.gen
 
 <br/>
 ## 입력기 설정(ibus)
+특정 배포판의 경우 사전에 ibus 및 ibus-hangul이 설치된 상태로 제공된다. <br/>
+그런 경우에는 설치할 필요가 없다.<br/>
 ### ibus 설치
 ```bash
 sudo pacman -S ibus ibus-hangul
